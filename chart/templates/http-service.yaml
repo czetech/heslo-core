@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "heslo-core.fullname" . }}-http
+  labels:
+    {{- include "heslo-core.labels" . | nindent 4 }}
+    app.kubernetes.io/component: http
+  annotations:
+    {{- toYaml .Values.http.service.annotations | nindent 4 }}
+spec:
+  type: {{ .Values.http.service.type }}
+  selector:
+    {{- include "heslo-core.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: http
+  ports:
+  - name: http
+    protocol: TCP
+    port: {{ .Values.http.service.port }}
+    targetPort: http
+    nodePort: {{ .Values.http.service.nodePort }}

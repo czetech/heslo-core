@@ -1,0 +1,3 @@
+aiohttp-cors~=0.7
+aioredis[hiredis]~=2.0
+connexion[aiohttp,swagger-ui]~=2.7

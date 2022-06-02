@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: heslo-core
+Version: 0.0.0
+Summary: Python example application and code structure.
+Home-page: https://github.com/heslo_core
+Author: Petr Czepiec
+Author-email: petr@czepiec.me
+Maintainer: Petr Czepiec
+Maintainer-email: petr@czepiec.me
+License: BSD
+Download-URL: https://github.com/heslo_core/-/archive/master/{name}-master.zip
+Project-URL: Bug Tracker, https://github.com/heslo_core
+Project-URL: Documentation, https://github.com/heslo_core
+Project-URL: Source Code, https://github.com/heslo_core
+Keywords: example,czetech,web,www,click,flask
+Platform: posix
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Environment :: Web Environment
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Internet :: WWW/HTTP :: WSGI :: Application
+Requires-Python: >=3.6
+
+# Heslo Core
+
+Heslo core service.
+
+

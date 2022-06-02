@@ -1,0 +1,3 @@
+[console_scripts]
+heslo_core = heslo_core:main
+

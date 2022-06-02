@@ -1,0 +1,17 @@
+apiVersion: v2
+name: heslo-core
+version: 1.0.0
+kubeVersion: ">= 1.14.0-0"
+description: Domotron Configurator
+type: application
+keywords:
+- domotron
+- tecoroute-proxy
+home: https://tecoroute-proxy.domotron.com/
+sources:
+- https://gitlab.com/domotron/tecoroute-proxy
+maintainers:
+- name: Petr Czepiec
+  email: petr@czepiec.me
+  url: https://czepiec.me/
+appVersion: 4.4.0

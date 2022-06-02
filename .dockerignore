@@ -1,0 +1,10 @@
+composer.phar
+/vendor/
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Git repository
+.git
+.gitignore
