@@ -1,0 +1,68 @@
+{{- define "heslo-core.fpm.probe" -}}
+exec:
+  command:
+  - /bin/sh
+  - -c
+  - >
+    env -i
+    SCRIPT_FILENAME=/app/www/index.php
+    HTTP_HOST={{ (index .Values.instances 0).host }}
+    REQUEST_METHOD=GET
+    REQUEST_URI=/none
+    cgi-fcgi -bind -connect localhost:9000
+    | grep "Nesprávna adresa, v prípade ak sa chyba opakuje, prosím kontaktujte"
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "heslo-core.fullname" . }}-http
+  labels:
+    {{- include "heslo-core.labels" . | nindent 4 }}
+    app.kubernetes.io/component: http
+  annotations:
+    {{- toYaml .Values.http.annotations | nindent 4 }}
+spec:
+  replicas: {{ .Values.http.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "heslo-core.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: http
+  template:
+    metadata:
+      labels:
+        {{- include "heslo-core.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: http
+      annotations:
+        {{- if .Values.http.podAnnotations }}
+        {{- toYaml .Values.http.podAnnotations | nindent 8 }}
+        {{- end }}
+    spec:
+      affinity:
+        {{- toYaml .Values.http.affinity | nindent 8 }}
+      containers:
+      - name: heslo-core
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: 80
+        {{- if and 0 .Values.http.probes }}
+        readinessProbe:
+          {{- include "heslo-core.http.probe" . | nindent 10 }}
+          initialDelaySeconds: 1
+          periodSeconds: 1
+          failureThreshold: 1
+        livenessProbe:
+          {{- include "heslo-core.http.probe" . | nindent 10 }}
+          initialDelaySeconds: 1
+        {{- end }}
+        lifecycle:
+          {{- toYaml .Values.http.lifecycle | nindent 10 }}
+        resources:
+          {{- toYaml .Values.http.resources | nindent 10 }}
+      imagePullSecrets:
+        {{- toYaml .Values.image.secrets | nindent 8 }}
+      nodeSelector:
+        {{- toYaml .Values.http.nodeSelector | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.http.tolerations | nindent 8 }}

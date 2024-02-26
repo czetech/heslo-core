@@ -1,0 +1,200 @@
+openapi: 3.0.3
+info:
+  title: Heslo Core
+  description: Heslo Core component public API.
+  version: 1.0.0
+
+servers:
+- url: /api/v1
+  description: This environment.
+
+paths:
+  /answer:
+    summary: Answer data
+    get:
+      tags:
+      - answer
+      summary: Answer data
+      operationId: heslo_core.api_v1.answer
+      responses:
+        "200":
+          description: Answer data.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/answer"
+        "4XX":
+          "$ref": "#/components/responses/client-error"
+        "5XX":
+          "$ref": "#/components/responses/server-error"
+  /messages:
+    summary: App alert messages
+    get:
+      tags:
+      - app
+      summary: App alert messages
+      operationId: heslo_core.api_v1.messages
+      responses:
+        "200":
+          description: App alert messages.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/message"
+        "4XX":
+          "$ref": "#/components/responses/client-error"
+        "5XX":
+          "$ref": "#/components/responses/server-error"
+  /play-store:
+    summary: App's Google Play Store link
+    get:
+      tags:
+      - app
+      summary: App's Google Play Store link
+      operationId: heslo_core.api_v1.play_store
+      responses:
+        "200":
+          description: App's Google Play Store link.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/store"
+        "4XX":
+          "$ref": "#/components/responses/client-error"
+        "5XX":
+          "$ref": "#/components/responses/server-error"
+  /app-store:
+    summary: App's Apple App Store link
+    get:
+      tags:
+      - app
+      summary: App's Apple App Store link
+      operationId: heslo_core.api_v1.app_store
+      responses:
+        "200":
+          description: App's Apple App Store link.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/store"
+        "4XX":
+          "$ref": "#/components/responses/client-error"
+        "5XX":
+          "$ref": "#/components/responses/server-error"
+  /faq:
+    summary: App frequently asked questions
+    get:
+      tags:
+      - app
+      summary: App frequently asked questions
+      operationId: heslo_core.api_v1.faq
+      responses:
+        "200":
+          description: App frequently asked questions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/faq"
+        "4XX":
+          "$ref": "#/components/responses/client-error"
+        "5XX":
+          "$ref": "#/components/responses/server-error"
+
+components:
+  schemas:
+    answer:
+      type: object
+      properties:
+        phrase:
+          type: string
+          description: Phrase to answer.
+          nullable: true
+          readOnly: true
+          example: ZDRAVÉ SLOVENSKO
+      required:
+      - phrase
+    message:
+      type: object
+      properties:
+        body:
+          type: string
+          description: Message body.
+          readOnly: true
+          example: Example message.
+      required:
+      - body
+    store:
+      type: object
+      properties:
+        url:
+          type: string
+          format: url
+          readOnly: true
+          example: https://play.google.com/store/apps/details?id=com.example.app
+      required:
+      - url
+    faq:
+      type: object
+      properties:
+        head:
+          type: string
+          readOnly: true
+          example: "?"
+        body:
+          type: string
+          readOnly: true
+          example: "42"
+      required:
+      - head
+      - body
+    client-error:
+      type: object
+      properties:
+        type:
+          type: string
+          description: URI that identifies the problem type.
+          format: uri
+          readOnly: true
+          example: about:blank
+        title:
+          type: string
+          description: A short summary of the problem type.
+          readOnly: true
+          example: A bad parameter was provided.
+        status:
+          type: integer
+          description: The HTTP status code.
+          format: int64
+          maximum: 499
+          minimum: 400
+          readOnly: true
+          example: 400
+        detail:
+          type: string
+          description: Explanation specific to this occurrence of the problem.
+          readOnly: true
+          example: Some parameter are not of a specific type.
+      required:
+      - type
+      - title
+      - status
+      - detail
+  responses:
+    client-error:
+      description: Client error.
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/client-error"
+    server-error:
+      description: Unexpected server error.
+
+tags:
+- name: answer
+  description: Current answer phrase.
+- name: app
+  description: Application related.
